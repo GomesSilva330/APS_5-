@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cliente", "APS-Chat\Cliente.csproj", "{AC68EDFD-FB7C-4F0B-A6EB-F18CB6C210F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servidor", "Servidor\Servidor.csproj", "{6248C246-0C80-4E45-A66A-4BE4D8B87B50}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC68EDFD-FB7C-4F0B-A6EB-F18CB6C210F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC68EDFD-FB7C-4F0B-A6EB-F18CB6C210F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC68EDFD-FB7C-4F0B-A6EB-F18CB6C210F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC68EDFD-FB7C-4F0B-A6EB-F18CB6C210F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6248C246-0C80-4E45-A66A-4BE4D8B87B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6248C246-0C80-4E45-A66A-4BE4D8B87B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6248C246-0C80-4E45-A66A-4BE4D8B87B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6248C246-0C80-4E45-A66A-4BE4D8B87B50}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7165525A-0394-4024-9162-D759057D40F1}
+	EndGlobalSection
+EndGlobal
