@@ -39,12 +39,18 @@
             this.btnEnviar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.txtMensagem = new System.Windows.Forms.TextBox();
+            this.txtUsuario = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnSair = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnSair);
+            this.groupBox1.Controls.Add(this.txtUsuario);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.btnConectar);
             this.groupBox1.Controls.Add(this.txtPorta);
             this.groupBox1.Controls.Add(this.txtIp);
@@ -69,22 +75,23 @@
             // 
             // txtPorta
             // 
-            this.txtPorta.Location = new System.Drawing.Point(159, 42);
+            this.txtPorta.Location = new System.Drawing.Point(97, 42);
             this.txtPorta.Name = "txtPorta";
-            this.txtPorta.Size = new System.Drawing.Size(45, 20);
+            this.txtPorta.Size = new System.Drawing.Size(29, 20);
             this.txtPorta.TabIndex = 3;
+            this.txtPorta.Text = "69";
             // 
             // txtIp
             // 
             this.txtIp.Location = new System.Drawing.Point(17, 42);
             this.txtIp.Name = "txtIp";
-            this.txtIp.Size = new System.Drawing.Size(136, 20);
+            this.txtIp.Size = new System.Drawing.Size(71, 20);
             this.txtIp.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(156, 26);
+            this.label2.Location = new System.Drawing.Point(94, 26);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 1;
@@ -147,6 +154,33 @@
             this.txtMensagem.Size = new System.Drawing.Size(187, 20);
             this.txtMensagem.TabIndex = 0;
             // 
+            // txtUsuario
+            // 
+            this.txtUsuario.Location = new System.Drawing.Point(135, 42);
+            this.txtUsuario.Name = "txtUsuario";
+            this.txtUsuario.Size = new System.Drawing.Size(69, 20);
+            this.txtUsuario.TabIndex = 6;
+            this.txtUsuario.Text = "Luan";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(132, 26);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(43, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Usuário";
+            // 
+            // btnSair
+            // 
+            this.btnSair.Location = new System.Drawing.Point(222, 41);
+            this.btnSair.Name = "btnSair";
+            this.btnSair.Size = new System.Drawing.Size(75, 23);
+            this.btnSair.TabIndex = 7;
+            this.btnSair.Text = "Sair";
+            this.btnSair.UseVisualStyleBackColor = true;
+            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
+            // 
             // TelaCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -177,6 +211,9 @@
         public System.Windows.Forms.TextBox txtResultado;
         public System.Windows.Forms.Button btnEnviar;
         public System.Windows.Forms.TextBox txtMensagem;
+        public System.Windows.Forms.TextBox txtUsuario;
+        private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.Button btnSair;
     }
 }
 

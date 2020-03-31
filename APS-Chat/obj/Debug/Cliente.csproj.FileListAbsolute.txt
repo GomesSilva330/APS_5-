@@ -1,7 +1,6 @@
 C:\dev\APS-Chat\APS-Chat\bin\Debug\APS-Chat.exe.config
 C:\dev\APS-Chat\APS-Chat\bin\Debug\APS-Chat.exe
 C:\dev\APS-Chat\APS-Chat\bin\Debug\APS-Chat.pdb
-C:\dev\APS-Chat\APS-Chat\obj\Debug\Cliente.csprojAssemblyReference.cache
 C:\dev\APS-Chat\APS-Chat\obj\Debug\APS_Chat.TelaCliente.resources
 C:\dev\APS-Chat\APS-Chat\obj\Debug\APS_Chat.Properties.Resources.resources
 C:\dev\APS-Chat\APS-Chat\obj\Debug\Cliente.csproj.GenerateResource.cache

@@ -1,4 +1,3 @@
-C:\dev\APS-Chat\Servidor\obj\Debug\netcoreapp3.1\Servidor.csprojAssemblyReference.cache
 C:\dev\APS-Chat\Servidor\obj\Debug\netcoreapp3.1\Servidor.csproj.CoreCompileInputs.cache
 C:\dev\APS-Chat\Servidor\obj\Debug\netcoreapp3.1\Servidor.AssemblyInfoInputs.cache
 C:\dev\APS-Chat\Servidor\obj\Debug\netcoreapp3.1\Servidor.AssemblyInfo.cs
