@@ -46,12 +46,12 @@ namespace Servidor
 
             var newip = IPAddress.Parse("25.4.212.0");
 
-            Socket_Servidor.Bind(new IPEndPoint(_ip, PORTA));
+            Socket_Servidor.Bind(new IPEndPoint(newip, PORTA));
             Socket_Servidor.Listen(20);
             Socket_Servidor.BeginAccept(AceitarConexao, null);
 
             Console.WriteLine("*----------------------*");
-            Console.WriteLine($"O seu ip é: {_ip}");
+            Console.WriteLine($"O seu ip é: {newip}");
             Console.WriteLine($"Sua porta é: {PORTA}");
             Console.WriteLine("Aguarando Clientes...");
             Console.WriteLine("*----------------------*");

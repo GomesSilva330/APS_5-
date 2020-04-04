@@ -149,7 +149,7 @@ namespace APS_Chat
             emotions.Add(":(", new Bitmap(Properties.Resources.cansado, new Size(20, 20)));
             emotions.Add("'-'", new Bitmap(Properties.Resources.luan, new Size(20, 20)));
             emotions.Add(";(", new Bitmap(Properties.Resources.preocupado, new Size(20, 20)));
-            emotions.Add(":'(", new Bitmap(Properties.Resources.risada, new Size(20, 20)));
+            emotions.Add(":')", new Bitmap(Properties.Resources.risada, new Size(20, 20)));
             emotions.Add(":)", new Bitmap(Properties.Resources.sorriso, new Size(20, 20)));
         }
 
