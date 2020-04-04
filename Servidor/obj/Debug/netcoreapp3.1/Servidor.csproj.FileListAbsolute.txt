@@ -10,3 +10,4 @@ C:\dev\APS-Chat\Servidor\bin\Debug\netcoreapp3.1\Servidor.pdb
 C:\dev\APS-Chat\Servidor\obj\Debug\netcoreapp3.1\Servidor.dll
 C:\dev\APS-Chat\Servidor\obj\Debug\netcoreapp3.1\Servidor.pdb
 C:\dev\APS-Chat\Servidor\obj\Debug\netcoreapp3.1\Servidor.genruntimeconfig.cache
+C:\dev\APS-Chat\Servidor\obj\Debug\netcoreapp3.1\Servidor.csprojAssemblyReference.cache

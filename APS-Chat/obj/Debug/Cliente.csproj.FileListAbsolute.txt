@@ -7,3 +7,4 @@ C:\dev\APS-Chat\APS-Chat\obj\Debug\Cliente.csproj.GenerateResource.cache
 C:\dev\APS-Chat\APS-Chat\obj\Debug\Cliente.csproj.CoreCompileInputs.cache
 C:\dev\APS-Chat\APS-Chat\obj\Debug\APS-Chat.exe
 C:\dev\APS-Chat\APS-Chat\obj\Debug\APS-Chat.pdb
+C:\dev\APS-Chat\APS-Chat\obj\Debug\Cliente.csprojAssemblyReference.cache

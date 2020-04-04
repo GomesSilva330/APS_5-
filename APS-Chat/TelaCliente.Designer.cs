@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSair = new System.Windows.Forms.Button();
+            this.txtUsuario = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.btnConectar = new System.Windows.Forms.Button();
             this.txtPorta = new System.Windows.Forms.TextBox();
             this.txtIp = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtResultado = new System.Windows.Forms.TextBox();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.txtMensagem = new System.Windows.Forms.TextBox();
-            this.txtUsuario = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnSair = new System.Windows.Forms.Button();
+            this.txtResultado = new System.Windows.Forms.RichTextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +62,33 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Conexão";
+            // 
+            // btnSair
+            // 
+            this.btnSair.Location = new System.Drawing.Point(222, 41);
+            this.btnSair.Name = "btnSair";
+            this.btnSair.Size = new System.Drawing.Size(75, 23);
+            this.btnSair.TabIndex = 7;
+            this.btnSair.Text = "Sair";
+            this.btnSair.UseVisualStyleBackColor = true;
+            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
+            // 
+            // txtUsuario
+            // 
+            this.txtUsuario.Location = new System.Drawing.Point(135, 42);
+            this.txtUsuario.Name = "txtUsuario";
+            this.txtUsuario.Size = new System.Drawing.Size(69, 20);
+            this.txtUsuario.TabIndex = 6;
+            this.txtUsuario.Text = "Luan";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(132, 26);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(43, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Usuário";
             // 
             // btnConectar
             // 
@@ -119,15 +146,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sala";
             // 
-            // txtResultado
-            // 
-            this.txtResultado.Location = new System.Drawing.Point(17, 71);
-            this.txtResultado.Multiline = true;
-            this.txtResultado.Name = "txtResultado";
-            this.txtResultado.ReadOnly = true;
-            this.txtResultado.Size = new System.Drawing.Size(280, 257);
-            this.txtResultado.TabIndex = 6;
-            // 
             // btnEnviar
             // 
             this.btnEnviar.Location = new System.Drawing.Point(222, 42);
@@ -154,32 +172,14 @@
             this.txtMensagem.Size = new System.Drawing.Size(187, 20);
             this.txtMensagem.TabIndex = 0;
             // 
-            // txtUsuario
+            // txtResultado
             // 
-            this.txtUsuario.Location = new System.Drawing.Point(135, 42);
-            this.txtUsuario.Name = "txtUsuario";
-            this.txtUsuario.Size = new System.Drawing.Size(69, 20);
-            this.txtUsuario.TabIndex = 6;
-            this.txtUsuario.Text = "Luan";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(132, 26);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(43, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Usuário";
-            // 
-            // btnSair
-            // 
-            this.btnSair.Location = new System.Drawing.Point(222, 41);
-            this.btnSair.Name = "btnSair";
-            this.btnSair.Size = new System.Drawing.Size(75, 23);
-            this.btnSair.TabIndex = 7;
-            this.btnSair.Text = "Sair";
-            this.btnSair.UseVisualStyleBackColor = true;
-            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
+            this.txtResultado.Location = new System.Drawing.Point(17, 71);
+            this.txtResultado.Name = "txtResultado";
+            this.txtResultado.ReadOnly = true;
+            this.txtResultado.Size = new System.Drawing.Size(280, 250);
+            this.txtResultado.TabIndex = 6;
+            this.txtResultado.Text = "";
             // 
             // TelaCliente
             // 
@@ -208,12 +208,12 @@
         public System.Windows.Forms.Button btnConectar;
         public System.Windows.Forms.TextBox txtPorta;
         public System.Windows.Forms.TextBox txtIp;
-        public System.Windows.Forms.TextBox txtResultado;
         public System.Windows.Forms.Button btnEnviar;
         public System.Windows.Forms.TextBox txtMensagem;
         public System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.Button btnSair;
+        private System.Windows.Forms.RichTextBox txtResultado;
     }
 }
 

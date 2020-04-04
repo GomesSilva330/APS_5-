@@ -65,6 +65,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -75,9 +76,29 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\Emoji.rar" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Image1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Laugh_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Oh_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PokerFace_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sad_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Smile_1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

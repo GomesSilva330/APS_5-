@@ -21,10 +21,18 @@ namespace Servidor
         {
             ConfigurarServidor();
 
-            string cmd = Console.ReadLine();
-            if (cmd.ToLower() == "sair")
-                FecharServidor();
-            Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes(cmd), 0, cmd.Length, SocketFlags.None));
+            while (true)
+            {
+                string cmd = Console.ReadLine();
+                if (cmd.ToLower() == "sair") {
+                    Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes("\r\n[Servidor Fechado]")));
+                    FecharServidor();
+                    System.Threading.Thread.Sleep(2000);
+                    Environment.Exit(0);
+                }
+                else
+                Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes("\r\n[Broadcaster]: " + cmd)));
+            }
         }
 
 
@@ -35,6 +43,8 @@ namespace Servidor
             var _ip = BuscarIp(_host);
             //var _ip = IPAddress.Any;
             Console.WriteLine($"Bem Vindo ao {SERVIDOR} , {_host}");
+
+            var newip = IPAddress.Parse("25.4.212.0");
 
             Socket_Servidor.Bind(new IPEndPoint(_ip, PORTA));
             Socket_Servidor.Listen(20);
@@ -55,6 +65,7 @@ namespace Servidor
                 socket.Close();
             }
             Socket_Servidor.Close();
+            Console.WriteLine("Fechando Servidor");
         }
 
         private static void AceitarConexao(IAsyncResult AR)
@@ -110,7 +121,7 @@ namespace Servidor
             }
 
             Console.WriteLine($"[{BuscarHost(_cliente)}] " + _msg);
-            Clientes.ForEach(x=>x.Send(Encoding.UTF8.GetBytes(_msg)));
+            Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes(_msg)));
 
             _cliente.BeginReceive(buffer, 0, MAX, SocketFlags.None, ReceberConexao, _cliente);
         }
