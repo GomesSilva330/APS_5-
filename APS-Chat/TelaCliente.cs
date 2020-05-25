@@ -1,20 +1,25 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
-
 namespace APS_Chat
 {
     public partial class TelaCliente : Form
     {
         private static readonly Socket Socket_Cliente = new Socket
     (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        private const int MAX = 2048;
+
+        private const int MAX = 5000;
         private static readonly byte[] buffer = new byte[MAX];
         private Hashtable emotions;
+        private List<bool> Logado = new List<bool>();
+
         public TelaCliente()
         {
             InitializeComponent();
@@ -47,7 +52,7 @@ namespace APS_Chat
                 }
 
                 Socket_Cliente.BeginConnect(_ip, _porta, Conectado, null);
-                txtResultado.AppendText("Conectou!");
+                Login();
                 DesabilitarFormulario();
             }
             catch (SocketException e)
@@ -57,25 +62,44 @@ namespace APS_Chat
                 HabilitarFormulario();
             }
         }
+        private bool Login()
+        {
+            try
+            {
+                var User = new { username = txtUsuario.Text, password = txtSenha.Text };
+                EnviarMensagem("-LOGIN-" + JsonConvert.SerializeObject(User));
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
         private void DesabilitarFormulario()
         {
             btnConectar.Visible = false;
             btnSair.Visible = true;
+            btnLogar.Visible = true;
             txtIp.ReadOnly = true;
             txtPorta.ReadOnly = true;
             txtUsuario.ReadOnly = true;
+            txtSenha.ReadOnly = true;
             txtMensagem.ReadOnly = false;
             btnEnviar.Enabled = true;
+            btnAnexar.Enabled = true;
         }
         private void HabilitarFormulario()
         {
             btnConectar.Visible = true;
             btnSair.Visible = false;
+            btnLogar.Visible = false;
             txtIp.ReadOnly = false;
             txtPorta.ReadOnly = false;
             txtUsuario.ReadOnly = false;
             txtMensagem.ReadOnly = true;
             btnEnviar.Enabled = false;
+            btnAnexar.Enabled = false;
         }
         private void btnEnviar_Click(object sender, EventArgs e)
         {
@@ -105,6 +129,7 @@ namespace APS_Chat
         }
         private void ReceberResposta(IAsyncResult AR)
         {
+
             try
             {
                 int _resposta = Socket_Cliente.EndReceive(AR);
@@ -114,12 +139,52 @@ namespace APS_Chat
                 var data = new byte[_resposta];
                 Array.Copy(buffer, data, _resposta);
                 var resposta = Encoding.UTF8.GetString(data);
-                txtResultado.Invoke((Action)delegate
-                {
-                    txtResultado.AppendText("\r\n"+resposta);
-                });
 
-                Emojies();
+                Logado.Add(resposta.Contains($"Usuário {txtUsuario.Text} se conectou!"));
+                if (Logado.Any(x => x == true))
+                {
+
+                    txtResultado.Invoke((Action)delegate
+                     {
+                         if (resposta.Contains("-IMG-") && resposta.Contains("-EIMG-"))
+                             VerificarMensagem(txtUsuario.Text, resposta.Replace("-IMG-", "").Replace("-EIMG-", ""));
+                         else
+                             txtResultado.AppendText("\r\n" + resposta);
+                     });
+                    txtUsuario.Invoke((Action)delegate
+                    {
+                        txtUsuario.ReadOnly = true;
+                    });
+                    txtSenha.Invoke((Action)delegate
+                    {
+                        txtSenha.ReadOnly = true;
+                    });
+                    btnLogar.Invoke((Action)delegate
+                    {
+                        btnLogar.Visible = false;
+                    });
+                    Emojies();
+                }
+                else
+                {
+                    txtResultado.Invoke((Action)delegate
+                    {
+                        txtResultado.AppendText(resposta + "\n");
+                    });
+                    txtUsuario.Invoke((Action)delegate
+                    {
+                        txtUsuario.ReadOnly = false;
+                    });
+                    txtSenha.Invoke((Action)delegate
+                    {
+                        txtSenha.ReadOnly = false;
+                    });
+                    btnLogar.Invoke((Action)delegate
+                    {
+                        btnLogar.Visible = true;
+                    });
+                }
+
                 Socket_Cliente.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceberResposta, null);
             }
             catch (Exception e)
@@ -130,18 +195,14 @@ namespace APS_Chat
         }
         private void btnSair_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Socket_Cliente.Close();
-            }
-            catch (Exception ex)
-            { Console.WriteLine(ex); }
-            finally
-            {
-                HabilitarFormulario();
-                txtResultado.AppendText("\r\nDesconectou..");
-            }
+
+            EnviarMensagem($"-DISCONNECTED-O usuário {txtUsuario.Text} se desconectou...");
+            Socket_Cliente.Disconnect(false);
+            Socket_Cliente.Shutdown(SocketShutdown.Both);
+            Socket_Cliente.Close();
+            Environment.Exit(0);
         }
+
 
         private void CreateEmotions()
         {
@@ -175,6 +236,69 @@ namespace APS_Chat
                 }
                 //txtResultado.Paste();
             });
+        }
+
+        private void btnLogar_Click(object sender, EventArgs e)
+        {
+            Login();
+        }
+
+        private void btnAnexar_Click(object sender, EventArgs e)
+        {
+            FileDialog Menssagem = new OpenFileDialog();
+            Menssagem.CheckFileExists = true;
+            Menssagem.CheckPathExists = true;
+            Menssagem.RestoreDirectory = true;
+            Menssagem.Title = "Escolha o arquivo de imagem";
+            if (Menssagem.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string arquivo = Menssagem.FileName;
+                    Bitmap _bitmap = new Bitmap(arquivo);
+                    _bitmap = new Bitmap(_bitmap, new Size(150, 100));
+                    System.IO.MemoryStream mss = new System.IO.MemoryStream();
+                    _bitmap.Save(mss, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    byte[] byteImage = mss.ToArray();
+
+                    string base64String = Convert.ToBase64String(byteImage);
+
+                    EnviarMensagem($"{txtUsuario.Text} enviou uma imagem: \n");
+                    EnviarMensagem("-IMG-" + base64String + "-EIMG-");
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Por favor, envie um arquivo de imagem");
+                    Console.WriteLine(ex);
+                }
+            }
+        }
+        public void VerificarMensagem(string user, string base64)
+        {
+            byte[] img_bytes = Convert.FromBase64String(base64);
+            using (var ms = new System.IO.MemoryStream(img_bytes, 0, img_bytes.Length))
+            {
+                var _img = Image.FromStream(ms);
+                Image img = new Bitmap(_img, new Size(150, 100));
+
+                if (Clipboard.ContainsImage()) { 
+                    Clipboard.Clear();
+                    txtResultado.Invoke((Action)delegate
+                    {
+                        txtResultado.AppendText($"Clipboard cheio, não foi possível anexar imagem");
+                    });
+                    return;
+                }
+                Clipboard.SetImage(img);
+                txtResultado.Invoke((Action)delegate
+                {
+                    txtResultado.ReadOnly = false;
+                    txtResultado.Paste(DataFormats.GetFormat(DataFormats.Bitmap));
+                    txtResultado.AppendText($"\n\r");
+                    txtResultado.ReadOnly = true;
+                });
+            }
         }
     }
 }

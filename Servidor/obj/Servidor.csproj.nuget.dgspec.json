@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\dev\\APS-Chat\\Servidor\\Servidor.csproj": {}
+    "C:\\Users\\gomes\\Downloads\\APS-Chat\\Servidor\\Servidor.csproj": {}
   },
   "projects": {
-    "C:\\dev\\APS-Chat\\Servidor\\Servidor.csproj": {
+    "C:\\Users\\gomes\\Downloads\\APS-Chat\\Servidor\\Servidor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\dev\\APS-Chat\\Servidor\\Servidor.csproj",
+        "projectUniqueName": "C:\\Users\\gomes\\Downloads\\APS-Chat\\Servidor\\Servidor.csproj",
         "projectName": "Servidor",
-        "projectPath": "C:\\dev\\APS-Chat\\Servidor\\Servidor.csproj",
-        "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-        "outputPath": "C:\\dev\\APS-Chat\\Servidor\\obj\\",
+        "projectPath": "C:\\Users\\gomes\\Downloads\\APS-Chat\\Servidor\\Servidor.csproj",
+        "packagesPath": "C:\\Users\\gomes\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gomes\\Downloads\\APS-Chat\\Servidor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gomes\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -37,6 +37,16 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -52,7 +62,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

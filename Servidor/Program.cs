@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -7,14 +11,19 @@ using System.Text;
 
 namespace Servidor
 {
+    public static class Provider
+    {
+        public static string DATABASE = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + Path.GetDirectoryName(Environment.CurrentDirectory).Replace(@"\bin\Debug", "") + "\\Database.mdf;Integrated Security=True";
+    }
     class Program
     {
         private static readonly Socket Socket_Servidor = new Socket
            (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private static readonly List<Socket> Clientes = new List<Socket>();
         private const int PORTA = 69;
-        private const int MAX = 2048;
+        private const int MAX = 5000;
         private const string SERVIDOR = "J.A.R.V.I.S";
+        private const string _diretorio = "J.A.R.V.I.S";
         private static readonly byte[] buffer = new byte[MAX];
 
         static void Main()
@@ -24,14 +33,19 @@ namespace Servidor
             while (true)
             {
                 string cmd = Console.ReadLine();
-                if (cmd.ToLower() == "sair") {
+                if (cmd.ToLower() == "sair")
+                {
                     Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes("\r\n[Servidor Fechado]")));
                     FecharServidor();
                     System.Threading.Thread.Sleep(2000);
                     Environment.Exit(0);
                 }
+                else if (cmd.ToLower() == "/criar")
+                {
+                    CriarUsuario();
+                }
                 else
-                Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes("\r\n[Broadcaster]: " + cmd)));
+                    Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes("\r\n[Broadcaster]: " + cmd)));
             }
         }
 
@@ -44,15 +58,15 @@ namespace Servidor
             //var _ip = IPAddress.Any;
             Console.WriteLine($"Bem Vindo ao {SERVIDOR} , {_host}");
 
-            var newip = IPAddress.Parse("25.4.212.0");
 
-            Socket_Servidor.Bind(new IPEndPoint(newip, PORTA));
+            Socket_Servidor.Bind(new IPEndPoint(_ip, PORTA));
             Socket_Servidor.Listen(20);
             Socket_Servidor.BeginAccept(AceitarConexao, null);
 
             Console.WriteLine("*----------------------*");
-            Console.WriteLine($"O seu ip é: {newip}");
+            Console.WriteLine($"O seu ip é: {_ip}");
             Console.WriteLine($"Sua porta é: {PORTA}");
+            Console.WriteLine($"Digite '/Criar' para criar um novo usuário'");
             Console.WriteLine("Aguarando Clientes...");
             Console.WriteLine("*----------------------*");
         }
@@ -78,11 +92,9 @@ namespace Servidor
                 return;
             }
 
-            Clientes.Add(_cliente);
             _cliente.BeginReceive(buffer, 0, MAX, SocketFlags.None, ReceberConexao, _cliente);
 
             Console.WriteLine("Novo Cliente se Conectou!");
-            _cliente.Send(Encoding.UTF8.GetBytes($"\r\nBem Vindo ao {SERVIDOR}!\r\nPara sair, digite 'sair'\r\n*----------------------*\r\n\r\n"));
 
             Socket_Servidor.BeginAccept(AceitarConexao, null);
         }
@@ -110,20 +122,37 @@ namespace Servidor
 
             string _msg = Encoding.UTF8.GetString(_rec_buffer);
 
-            if (_msg.ToLower() == "sair")
+            if (_msg.Contains("-DISCONNECTED-"))
             {
-                // Always Shutdown before closing
-                _cliente.Shutdown(SocketShutdown.Both);
+                Console.WriteLine("O Cliente foi desconectado :( ");
                 _cliente.Close();
                 Clientes.Remove(_cliente);
-                Console.WriteLine("Cliente se desconectou");
+                Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes(_msg.Replace("-DISCONNECTED-", ""))));
                 return;
             }
+            else if (_msg.Contains("-LOGIN-"))
+            {
+                var _string = _msg.Replace("-LOGIN-", "");
+                dynamic obj = JsonConvert.DeserializeObject(_string);
+                if (VerificarLogin(obj))
+                {
+                    Clientes.Add(_cliente);
+                    Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes($"Usuário {obj.username} se conectou!")));
+                    ArmazenarMensagem($"Usuário {obj.username} se conectou!");
+                }
+                else
+                    _cliente.Send(Encoding.UTF8.GetBytes("\r\nUsuário ou senha incorretos."));
 
-            Console.WriteLine($"[{BuscarHost(_cliente)}] " + _msg);
-            Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes(_msg)));
+                _cliente.BeginReceive(buffer, 0, MAX, SocketFlags.None, ReceberConexao, _cliente);
+            }
+            else
+            {
+                Clientes.ForEach(x => x.Send(Encoding.UTF8.GetBytes(_msg)));
+                if (!_msg.Contains("-IMG-") && !_msg.Contains("-EIMG-"))
+                    ArmazenarMensagem(_msg);
+                _cliente.BeginReceive(buffer, 0, MAX, SocketFlags.None, ReceberConexao, _cliente);
+            }
 
-            _cliente.BeginReceive(buffer, 0, MAX, SocketFlags.None, ReceberConexao, _cliente);
         }
         private static string BuscarHost(Socket _cliente)
         {
@@ -133,6 +162,68 @@ namespace Servidor
         private static IPAddress BuscarIp(string host)
         {
             return Dns.GetHostEntry(host).AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault();
+        }
+        private static bool VerificarLogin(dynamic obj)
+        {
+            SqlConnection conn = new SqlConnection(Provider.DATABASE);
+            conn.Open();
+
+            string query = $"select * from Usuarios where Usuario = '{obj.username}' and Senha = '{obj.password}'";
+            SqlDataAdapter adp = new SqlDataAdapter(query, conn);
+
+            DataTable dt = new DataTable();
+            adp.Fill(dt);
+
+            conn.Close();
+
+            if (dt.Rows.Count > 0) return true;
+            else return false;
+        }
+        private static bool ArmazenarMensagem(string msg)
+        {
+            SqlConnection conn = new SqlConnection(Provider.DATABASE);
+            conn.Open();
+
+            string query = $"Insert into Mensagens (Mensagem,Criado) values (@msg,@data)";
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@msg", msg);
+            cmd.Parameters.AddWithValue("@data", DateTime.Now);
+
+            var rows = cmd.ExecuteNonQuery();
+            conn.Close();
+
+            if (rows > 0) return true;
+            else return false;
+        }
+        private static void CriarUsuario()
+        {
+            Console.WriteLine("Digite o Usuário:");
+            var username = Console.ReadLine();
+            Console.WriteLine("Digite a Senha:");
+            var password = Console.ReadLine();
+
+            try
+            {
+                SqlConnection conn = new SqlConnection(Provider.DATABASE);
+                conn.Open();
+
+                string query = $"Insert into Usuarios (Usuario,Senha) values (@user,@pass)";
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@user", username);
+                cmd.Parameters.AddWithValue("@pass", password);
+
+                var rows = cmd.ExecuteNonQuery();
+                conn.Close();
+
+                Console.WriteLine($"Usuário {username} criado com sucesso!");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Falha ao criar Usuário.");
+                throw;
+            }
         }
     }
 }
